@@ -37,7 +37,10 @@ class Game extends Phaser.Scene {
 
     this.stars = [];
     for (let i = 1; i < 5 +1; i++) {
-      let newstar = this.add.sprite(80 * i - 40, 50, "star");
+      let newstar = this.add.sprite(
+        Phaser.Math.Between(0, game.config.width),
+        Phaser.Math.Between(0, game.config.height),
+        "star");
       newstar.setTint(0xFFFFFF);
       newstar.setInteractive({draggable: true});
       newstar.setDepth(100);
