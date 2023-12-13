@@ -8,23 +8,63 @@ class Game extends Phaser.Scene {
     this.load.image("maze", "maze.png");
     this.load.image("dipper", "dipper.png");
     this.load.image("dipperSolution", "dipperSol.png");
+    this.load.image("orionSolution", "orionSol.png");
+    this.load.image("cepheusSolution", "CepheusSol.png")
     this.load.image("white", "white200.png");
   }
   create() {
+    // get random
+    let puzzleChosen = Phaser.Math.Between(0, 2);
+    console.log("puzzle chosen:" + puzzleChosen);
 
-    //this.add.image(-150, 100, 'dipper').setOrigin(0, 0).setScale(0.75);
+    //this.add.image(-100, 0, 'cepheusSolution').setOrigin(0, 0).setScale(0.75);
     
     // Create a green square as a drop zone
+    
     this.squares = [];
-    this.squares.push(this.add.image(295, 255, 'white'));
+    
+    if(puzzleChosen == 0){ // dipper
+      
+      this.squares.push(this.add.image(295, 255, 'white'));
 
-    this.squares.push(this.add.image(520, 175, 'white'));
+      this.squares.push(this.add.image(520, 175, 'white'));
 
-    this.squares.push(this.add.image(625, 340, 'white'));
+      this.squares.push(this.add.image(625, 340, 'white'));
 
-    this.squares.push(this.add.image(425, 435, 'white'));
+      this.squares.push(this.add.image(425, 435, 'white'));
 
-    this.squares.push(this.add.image(70, 460, 'white'));
+      this.squares.push(this.add.image(70, 460, 'white'));
+    }
+
+    if(puzzleChosen == 1){ // orion
+      
+      this.squares.push(this.add.image(290, 290, 'white'));
+
+      this.squares.push(this.add.image(380, 260, 'white'));
+
+      this.squares.push(this.add.image(455, 250, 'white'));
+
+      this.squares.push(this.add.image(485, 60, 'white'));
+
+      this.squares.push(this.add.image(240, 80, 'white'));
+
+      this.squares.push(this.add.image(280, 480, 'white'));
+
+      this.squares.push(this.add.image(560, 420, 'white'));
+    }
+
+    if(puzzleChosen == 2){ // cepheus
+      
+      this.squares.push(this.add.image(170, 290, 'white'));
+
+      this.squares.push(this.add.image(390, 170, 'white'));
+
+      this.squares.push(this.add.image(515, 360, 'white'));
+
+      this.squares.push(this.add.image(195, 100, 'white'));
+
+      this.squares.push(this.add.image(300, 500, 'white'));
+    }
 
     for (let i = 0; i < this.squares.length; i++){
       this.squares[i]
@@ -36,10 +76,10 @@ class Game extends Phaser.Scene {
     }
 
     this.stars = [];
-    for (let i = 1; i < 5 +1; i++) {
+    for (let i = 0; i < this.squares.length; i++) {
       let newstar = this.add.sprite(
-        Phaser.Math.Between(0, game.config.width),
-        Phaser.Math.Between(0, game.config.height),
+        Phaser.Math.Between(10, game.config.width - 10),
+        Phaser.Math.Between(10, game.config.height - 10),
         "star");
       newstar.setTint(0xFFFFFF);
       newstar.setInteractive({draggable: true});
@@ -69,9 +109,21 @@ class Game extends Phaser.Scene {
     });
 
     // Handle drag event
-    this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+    this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
       gameObject.x = dragX;
       gameObject.y = dragY;
+
+      gameObject.setTint(0xffffff); // Reset tint
+
+      // Check if the player is dropped onto the green square
+      for(let i = 0; i < this.squares.length; i++){
+
+        if (Phaser.Geom.Rectangle.ContainsPoint(this.squares[i].getBounds(), new Phaser.Geom.Point(gameObject.x, gameObject.y))) {
+          gameObject.setTint(0x00ff00); // Turn the player green if dropped onto the green square
+          //numOfGreenStars++;
+        } 
+
+      }
     });
 
     // Handle drag end event
@@ -92,10 +144,32 @@ class Game extends Phaser.Scene {
       
       if(numOfGreenStars == this.squares.length){
         console.log("WIN");
+
+        if(puzzleChosen == 0){ // dipper
         this.add.image(-150, 100, 'dipperSolution')
         .setOrigin(0, 0)
         .setScale(0.75)
         .setDepth(1);
+        }
+
+        if (puzzleChosen == 1){ // orion
+          this.add.image(-100, 0, 'orionSolution')
+          .setOrigin(0, 0)
+          .setScale(0.75)
+          .setDepth(1);
+        
+        }
+
+        if (puzzleChosen == 2) { // cepheus
+          this.add.image(-100, 0, 'cepheusSolution')
+          .setOrigin(0, 0)
+          .setScale(0.75)
+          .setDepth(1);
+    
+        }
+
+
+
       }
 
     });
