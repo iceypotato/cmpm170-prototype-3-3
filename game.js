@@ -11,11 +11,26 @@ class Game extends Phaser.Scene {
     this.load.image("orionSolution", "orionSol.png");
     this.load.image("cepheusSolution", "CepheusSol.png")
     this.load.image("white", "white200.png");
+    this.load.image("map", "map.png");
   }
+
+  showMap() {
+    this.mapSolution.alpha = 1.0;
+  }
+
+  hideMap() {
+    this.mapSolution.alpha = 0.0;
+  }
+
   create() {
     // get random
     let puzzleChosen = Phaser.Math.Between(0, 2);
     console.log("puzzle chosen:" + puzzleChosen);
+
+    this.mapicon = this.add.image(800 - 64, 600 - 64, 'map');
+    this.mapicon.setInteractive();
+    this.mapicon.on('pointerover', () => this.showMap());
+    this.mapicon.on('pointerout', () => this.hideMap());
 
     //this.add.image(-100, 0, 'cepheusSolution').setOrigin(0, 0).setScale(0.75);
     
@@ -24,6 +39,9 @@ class Game extends Phaser.Scene {
     this.squares = [];
     
     if(puzzleChosen == 0){ // dipper
+        this.mapSolution = this.add.image(800 - 200, 600 - 120, 'dipperSolution');
+        this.mapSolution.setScale(0.25);
+        this.hideMap();
       
       this.squares.push(this.add.image(295, 255, 'white'));
 
@@ -37,7 +55,10 @@ class Game extends Phaser.Scene {
     }
 
     if(puzzleChosen == 1){ // orion
-      
+        this.mapSolution = this.add.image(800 - 200, 600 - 120, 'orionSolution');
+        this.mapSolution.setScale(0.25);
+        this.hideMap();
+
       this.squares.push(this.add.image(290, 290, 'white'));
 
       this.squares.push(this.add.image(380, 260, 'white'));
@@ -54,6 +75,9 @@ class Game extends Phaser.Scene {
     }
 
     if(puzzleChosen == 2){ // cepheus
+        this.mapSolution = this.add.image(800 - 200, 600 - 120, 'cepheusSolution');
+        this.mapSolution.setScale(0.25);
+        this.hideMap();
       
       this.squares.push(this.add.image(170, 290, 'white'));
 
