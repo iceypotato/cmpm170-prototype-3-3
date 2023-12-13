@@ -20,30 +20,35 @@ class Game extends Phaser.Scene {
     .setScale(0.5)
     .setInteractive({ dropZone: true })
     .setDepth(0)
+    .setTint(0x0)
     );
 
     this.squares.push(this.add.image(500, 200, 'white')
     .setScale(0.5)
     .setInteractive({ dropZone: true })
     .setDepth(0)
+    .setTint(0x0)
     );
 
     this.squares.push(this.add.image(650, 350, 'white')
     .setScale(0.5)
     .setInteractive({ dropZone: true })
     .setDepth(0)
+    .setTint(0x0)
     );
 
     this.squares.push(this.add.image(420, 450, 'white')
     .setScale(0.5)
     .setInteractive({ dropZone: true })
     .setDepth(0)
+    .setTint(0x0)
     );
 
     this.squares.push(this.add.image(70, 450, 'white')
     .setScale(0.5)
     .setInteractive({ dropZone: true })
     .setDepth(0)
+    .setTint(0x0)
     );
 
     this.stars = [];
