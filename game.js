@@ -6,31 +6,53 @@ class Game extends Phaser.Scene {
     this.load.image("star", "star.png");
     this.load.image("light", "mask.png");
     this.load.image("maze", "maze.png");
+    this.load.image("dipper", "dipper.png");
+    this.load.image("dipperSolution", "dipperSol.png");
+    this.load.image("white", "white200.png");
   }
   create() {
-    let bmask = this.add.bitmapMask(null, 0, 0, "light");
-    this.mazepieces = [];
-    for (let i = 0; i < 10; i++) {
-      let mazepiece = this.add.image(400, 429, "maze");
-      mazepiece.setCrop(i * 80, 0, 80, 292);
-      mazepiece.setMask(bmask);
-      mazepiece.depth = 1;
-      this.mazepieces.push(mazepiece);
-    }
 
-    let mazeorder = [8, 3, 4, 9, 1, 0, 5, 6, 2, 7];
-    let starorder = [5, 4, 8, 1, 2, 6, 7, 9, 0, 3];
-    this.mazepieces.sort(function (a, b) {
-      return mazeorder.indexOf(a) - mazeorder.indexOf(b);
-    });
+    //this.add.image(-150, 100, 'dipper').setOrigin(0, 0).setScale(0.75);
+    
+    // Create a green square as a drop zone
+    this.squares = [];
+    this.squares.push(this.add.image(300, 250, 'white')
+    .setScale(0.5)
+    .setInteractive({ dropZone: true })
+    .setDepth(0)
+    );
+
+    this.squares.push(this.add.image(500, 200, 'white')
+    .setScale(0.5)
+    .setInteractive({ dropZone: true })
+    .setDepth(0)
+    );
+
+    this.squares.push(this.add.image(650, 350, 'white')
+    .setScale(0.5)
+    .setInteractive({ dropZone: true })
+    .setDepth(0)
+    );
+
+    this.squares.push(this.add.image(420, 450, 'white')
+    .setScale(0.5)
+    .setInteractive({ dropZone: true })
+    .setDepth(0)
+    );
+
+    this.squares.push(this.add.image(70, 450, 'white')
+    .setScale(0.5)
+    .setInteractive({ dropZone: true })
+    .setDepth(0)
+    );
 
     this.stars = [];
     for (let i = 1; i < 11; i++) {
       let newstar = this.add.sprite(80 * i - 40, 50, "star");
-      newstar.tint = HueToCol((i - 1) * 0.1);
-      newstar.setInteractive();
-      this.input.setDraggable(newstar);
-      newstar.orderid = starorder[i - 1];
+      newstar.setTint(0xFFFFFF);
+      newstar.setInteractive({draggable: true});
+      newstar.setDepth(100);
+      //newstar.orderid = starorder[i - 1];
       this.stars.push(newstar);
     }
 
@@ -41,9 +63,51 @@ class Game extends Phaser.Scene {
       star.x = x;
       star.y = y;
 
-      let newmask = this.add.bitmapMask(null, x, y, "light");
-      this.mazepieces[star.orderid].setMask(newmask);
     });
+
+
+    let numOfGreenStars = 0;
+
+    // Handle drag start event
+    this.input.on('dragstart', function (pointer, gameObject) {
+      if(gameObject.tint == 0x00ff00)
+        numOfGreenStars--;
+
+      gameObject.setTint(0xffffff); // Reset tint when dragging starts
+    });
+
+    // Handle drag event
+    this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+      gameObject.x = dragX;
+      gameObject.y = dragY;
+    });
+
+    // Handle drag end event
+    this.input.on('dragend',  (pointer, gameObject) => {
+
+      // Check if the player is dropped onto the green square
+      for(let i = 0; i < this.squares.length; i++){
+
+        if (Phaser.Geom.Rectangle.ContainsPoint(this.squares[i].getBounds(), new Phaser.Geom.Point(gameObject.x, gameObject.y))) {
+          gameObject.setTint(0x00ff00); // Turn the player green if dropped onto the green square
+          numOfGreenStars++;
+        }
+
+      }
+
+      console.log("Number of green stars:" + numOfGreenStars);
+
+      
+      if(numOfGreenStars == this.squares.length){
+        console.log("WIN");
+        this.add.image(-150, 100, 'dipperSolution')
+        .setOrigin(0, 0)
+        .setScale(0.75)
+        .setDepth(1);
+      }
+
+    });
+
   }
 
   update() {}
@@ -60,35 +124,3 @@ const game = new Phaser.Game({
   scene: [Game],
   title: "Seeing Stars",
 });
-
-function HueToCol(hue) {
-  var r, g, b, i, f, q;
-  i = Math.floor(hue * 6);
-  f = hue * 6 - i;
-  q = 1 - f;
-  switch (i % 6) {
-    case 0:
-      (r = 1), (g = f), (b = 0);
-      break;
-    case 1:
-      (r = q), (g = 1), (b = 0);
-      break;
-    case 2:
-      (r = 0), (g = 1), (b = f);
-      break;
-    case 3:
-      (r = 0), (g = q), (b = 1);
-      break;
-    case 4:
-      (r = f), (g = 0), (b = 1);
-      break;
-    case 5:
-      (r = 1), (g = 0), (b = q);
-      break;
-  }
-  return (
-    Math.round(r * 255) * 65536 +
-    Math.round(g * 255) * 256 +
-    Math.round(b * 255)
-  );
-}
