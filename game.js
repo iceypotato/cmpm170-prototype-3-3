@@ -28,7 +28,7 @@ class Game extends Phaser.Scene {
     console.log("puzzle chosen:" + puzzleChosen);
 
     this.mapicon = this.add.image(800 - 64, 600 - 64, 'map');
-    this.mapicon.setInteractive();
+    this.mapicon.setInteractive().setDepth(150);
     this.mapicon.on('pointerover', () => this.showMap());
     this.mapicon.on('pointerout', () => this.hideMap());
 
@@ -40,7 +40,7 @@ class Game extends Phaser.Scene {
     
     if(puzzleChosen == 0){ // dipper
         this.mapSolution = this.add.image(800 - 200, 600 - 120, 'dipperSolution');
-        this.mapSolution.setScale(0.25);
+        this.mapSolution.setScale(0.25).setDepth(200);
         this.hideMap();
       
       this.squares.push(this.add.image(295, 255, 'white'));
@@ -56,7 +56,7 @@ class Game extends Phaser.Scene {
 
     if(puzzleChosen == 1){ // orion
         this.mapSolution = this.add.image(800 - 200, 600 - 120, 'orionSolution');
-        this.mapSolution.setScale(0.25);
+        this.mapSolution.setScale(0.25).setDepth(200);
         this.hideMap();
 
       this.squares.push(this.add.image(290, 290, 'white'));
@@ -76,7 +76,7 @@ class Game extends Phaser.Scene {
 
     if(puzzleChosen == 2){ // cepheus
         this.mapSolution = this.add.image(800 - 200, 600 - 120, 'cepheusSolution');
-        this.mapSolution.setScale(0.25);
+        this.mapSolution.setScale(0.25).setDepth(200);
         this.hideMap();
       
       this.squares.push(this.add.image(170, 290, 'white'));
@@ -107,7 +107,7 @@ class Game extends Phaser.Scene {
         "star");
       newstar.setTint(0xFFFFFF);
       newstar.setInteractive({draggable: true});
-      newstar.setDepth(100);
+      newstar.setDepth(500);
       //newstar.orderid = starorder[i - 1];
       this.stars.push(newstar);
     }
