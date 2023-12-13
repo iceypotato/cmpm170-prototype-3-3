@@ -8,7 +8,7 @@ class Game extends Phaser.Scene {
     this.load.image("maze", "maze.png");
     this.load.image("dipper", "dipper.png");
     this.load.image("dipperSolution", "dipperSol.png");
-    this.load.image("orionSolution", "orionSol.png");
+    this.load.image("orionSolution", "OrionSol.png");
     this.load.image("cepheusSolution", "CepheusSol.png")
     this.load.image("white", "white200.png");
     this.load.image("map", "map.png");
