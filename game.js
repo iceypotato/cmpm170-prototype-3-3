@@ -16,43 +16,27 @@ class Game extends Phaser.Scene {
     
     // Create a green square as a drop zone
     this.squares = [];
-    this.squares.push(this.add.image(300, 250, 'white')
-    .setScale(0.5)
-    .setInteractive({ dropZone: true })
-    .setDepth(0)
-    .setTint(0x0)
-    );
+    this.squares.push(this.add.image(295, 255, 'white'));
 
-    this.squares.push(this.add.image(500, 200, 'white')
-    .setScale(0.5)
-    .setInteractive({ dropZone: true })
-    .setDepth(0)
-    .setTint(0x0)
-    );
+    this.squares.push(this.add.image(520, 175, 'white'));
 
-    this.squares.push(this.add.image(650, 350, 'white')
-    .setScale(0.5)
-    .setInteractive({ dropZone: true })
-    .setDepth(0)
-    .setTint(0x0)
-    );
+    this.squares.push(this.add.image(625, 340, 'white'));
 
-    this.squares.push(this.add.image(420, 450, 'white')
-    .setScale(0.5)
-    .setInteractive({ dropZone: true })
-    .setDepth(0)
-    .setTint(0x0)
-    );
+    this.squares.push(this.add.image(425, 435, 'white'));
 
-    this.squares.push(this.add.image(70, 450, 'white')
-    .setScale(0.5)
-    .setInteractive({ dropZone: true })
-    .setDepth(0)
-    .setTint(0x0)
-    );
+    this.squares.push(this.add.image(70, 460, 'white'));
+
+    for (let i = 0; i < this.squares.length; i++){
+      this.squares[i]
+      .setScale(0.15)
+      .setOrigin(0.5,0.5)
+      .setInteractive({ dropZone: true })
+      .setDepth(0)
+      .setTint(0x0);
+    }
 
     this.stars = [];
-    for (let i = 1; i < 11; i++) {
+    for (let i = 1; i < 5 +1; i++) {
       let newstar = this.add.sprite(80 * i - 40, 50, "star");
       newstar.setTint(0xFFFFFF);
       newstar.setInteractive({draggable: true});
